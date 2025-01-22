@@ -3,22 +3,13 @@ spring:
     name: blood-sample-management-system
 
   datasource:
-    driver-class-name:  om.mysql.cj.jdbc.Driver
-    url:  jdbc:mysql://localhost:3306/springboot_productDB?createDatabaseIfNotExist=true
-    username :  root
-    password :  tiger
+    username: root
+    password: tiger
+    url: jdbc:mysql://localhost:3306/springboot_bsm_DB?createDatabaseIfNotExist=true
   jpa:
-    hibernate.ddl-auto : update
-    show-sql : true
-    properties.hibernate.dailect : org.hibernate.dailect.MySQL8Dialect
-server:
-  port : 8081
-    
-    
-
-
-
-
-
-
-
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
