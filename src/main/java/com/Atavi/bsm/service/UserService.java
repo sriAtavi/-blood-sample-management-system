@@ -13,4 +13,6 @@ public interface  UserService
     public UserResponse addUser(UserRequest userRequest); // This is using DTOs instead of using User Entity
 
     public UserResponse findByUserId(int userId);
+
+   public UserResponse updateUser(UserRequest userRequest,int userId);
 }

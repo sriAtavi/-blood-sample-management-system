@@ -4,6 +4,7 @@ import com.Atavi.bsm.requestDTO.UserRequest;
 import com.Atavi.bsm.responseDTO.UserResponse;
 import com.Atavi.bsm.util.RestResponseBuilder;
 import com.Atavi.bsm.util.ResponseStructure;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class UserController
 
     //Using DTO rather than entity directly which is to be done always and right approach
     @PostMapping("/registerUser")
-    public ResponseEntity<ResponseStructure<UserResponse>> registerUser(@RequestBody UserRequest userRequest)
+    public ResponseEntity<ResponseStructure<UserResponse>> registerUser(@RequestBody @Valid UserRequest userRequest)
     {
         UserResponse  userResponse = userService.addUser(userRequest);
         return responseBuilder.success(HttpStatus.CREATED, "User Created", userResponse);
@@ -53,6 +54,13 @@ public class UserController
       UserResponse userResponse = userService.findByUserId(userId);
         return responseBuilder.success(HttpStatus.FOUND, "User Found", userResponse);
     }
+    @PutMapping("/users/{userId}")
+    public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest userRequest,@PathVariable int userId)
+    {
+        UserResponse  userResponse = userService.updateUser(userRequest,userId);
+        return responseBuilder.success(HttpStatus.CREATED, "User Created", userResponse);
+    }
+
 
 
 }
