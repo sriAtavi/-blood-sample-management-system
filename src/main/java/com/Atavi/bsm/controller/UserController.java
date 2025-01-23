@@ -1,17 +1,16 @@
 package com.Atavi.bsm.controller;
 
+import com.Atavi.bsm.requestDTO.UserRequest;
+import com.Atavi.bsm.responseDTO.UserResponse;
 import com.Atavi.bsm.util.RestResponseBuilder;
 import com.Atavi.bsm.util.ResponseStructure;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.Atavi.bsm.service.UserService;
 import com.Atavi.bsm.entity.User;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @AllArgsConstructor //(Coz of this @Autowired (Field injection)is not used)
@@ -31,15 +30,29 @@ public class UserController
 //
 //    }
 
+    // For adding or registering User entity details directly which is the wrong way as shown below
+//    @PostMapping("/registerUser")
+//    public ResponseEntity<ResponseStructure<User>> registerUser(@RequestBody User user)
+//    {
+//        user = userService.addUser(user);
+//        return responseBuilder.success(HttpStatus.CREATED, "User Created", user);
+//    }
+
+    //Using DTO rather than entity directly which is to be done always and right approach
     @PostMapping("/registerUser")
-    public ResponseEntity<ResponseStructure<User>> registerUser(@RequestBody User user)
+    public ResponseEntity<ResponseStructure<UserResponse>> registerUser(@RequestBody UserRequest userRequest)
     {
-        user = userService.addUser(user);
-        return responseBuilder.success(HttpStatus.CREATED, "User Created", user);
+        UserResponse  userResponse = userService.addUser(userRequest);
+        return responseBuilder.success(HttpStatus.CREATED, "User Created", userResponse);
     }
 
-    public ResponseEntity<ResponseStructure<User>> findByUserId(@PathVariable int userId)
+
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<ResponseStructure<UserResponse>> findByUserId(@PathVariable int userId)
     {
-      User user = userService.findByUserId(userId);
+      UserResponse userResponse = userService.findByUserId(userId);
+        return responseBuilder.success(HttpStatus.FOUND, "User Found", userResponse);
     }
+
+
 }
