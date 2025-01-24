@@ -2,6 +2,7 @@ package com.Atavi.bsm.responseDTO;
 
 import com.Atavi.bsm.enums.BloodGroup;
 import com.Atavi.bsm.enums.Gender;
+import com.Atavi.bsm.enums.UserRole;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,4 +26,5 @@ public class UserResponse // While providing response to the user/client
     private String availableCity;
     private boolean verified;
     private BloodGroup bloodGroup;
+    private UserRole userRole;
 }

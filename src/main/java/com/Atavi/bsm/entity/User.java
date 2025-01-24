@@ -2,10 +2,8 @@ package com.Atavi.bsm.entity;
 
 import com.Atavi.bsm.enums.BloodGroup;
 import com.Atavi.bsm.enums.Gender;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.Atavi.bsm.enums.UserRole;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +33,11 @@ public class User
     private String availableCity;
     private boolean verified;
     private BloodGroup bloodGroup;
+    private UserRole userRole;
+
+    @OneToOne(mappedBy = "user",fetch = FetchType.EAGER) // This denotes that Admin is the owning Side here
+    private Admin admin;
+
 
 
 

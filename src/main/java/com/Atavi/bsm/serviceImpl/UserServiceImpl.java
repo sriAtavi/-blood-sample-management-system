@@ -1,6 +1,11 @@
 package com.Atavi.bsm.serviceImpl;
 
+import com.Atavi.bsm.entity.Admin;
 import com.Atavi.bsm.entity.User;
+import com.Atavi.bsm.enums.AdminType;
+import com.Atavi.bsm.enums.UserRole;
+import com.Atavi.bsm.exception.UserNotFoundException;
+import com.Atavi.bsm.repository.AdminRepository;
 import com.Atavi.bsm.requestDTO.UserRequest;
 import com.Atavi.bsm.responseDTO.UserResponse;
 import com.Atavi.bsm.service.UserService;
@@ -14,6 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService
 {
+    private final AdminRepository adminRepository;
     //Factory Method to Map the User Entity to UserRequest-DTO which will be using frequently and making this as Non-Static which would be safer
     // while Testing
     // The below method signature can be used only for adding new User
@@ -56,6 +62,7 @@ public class UserServiceImpl implements UserService
                 .availableCity(user.getAvailableCity())
                 .verified(user.isVerified())
                 .bloodGroup(user.getBloodGroup())
+                .userRole(user.getUserRole())
                 .build();
     }
 
@@ -76,8 +83,8 @@ public class UserServiceImpl implements UserService
     @Override
     public UserResponse addUser(UserRequest userRequest) {
         User user = mapUserRequestToUser(userRequest,new User());
-
-                user = userRepository.save(user);
+                user.setUserRole(UserRole.USER);
+                userRepository.save(user);
 
                 return mapToUserResponse(user);
     }
@@ -89,7 +96,8 @@ public class UserServiceImpl implements UserService
     public UserResponse findByUserId(int userId) {
             Optional<User> userResult = userRepository.findById(userId);
 
-          //  if(user.isEmpty())
+            if(userResult.isEmpty())
+                throw new UserNotFoundException("User Not Found");
 
             User user = userResult.get();
 
@@ -101,17 +109,15 @@ public class UserServiceImpl implements UserService
         Optional<User> userResult = userRepository.findById(userId);
 
         if(userResult.isEmpty())
-            System.out.println("User Not FOund");
+            throw new UserNotFoundException("Failed To Update");
 
 
         User existinguser = userResult.get();
-                existinguser = mapUserRequestToUser(userRequest,existinguser);
-         userRepository.save(existinguser);
+       // existinguser= mapUserRequestToUser(userRequest,existinguser);
+        mapUserRequestToUser(userRequest,existinguser);
+        userRepository.save(existinguser);
 
         return mapToUserResponse(existinguser);
-
-
-
 
 }
 }

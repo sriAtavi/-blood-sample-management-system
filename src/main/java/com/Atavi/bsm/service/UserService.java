@@ -15,4 +15,5 @@ public interface  UserService
     public UserResponse findByUserId(int userId);
 
    public UserResponse updateUser(UserRequest userRequest,int userId);
+
 }

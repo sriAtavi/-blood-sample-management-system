@@ -2,6 +2,7 @@ package com.Atavi.bsm.controller;
 
 import com.Atavi.bsm.requestDTO.UserRequest;
 import com.Atavi.bsm.responseDTO.UserResponse;
+
 import com.Atavi.bsm.util.RestResponseBuilder;
 import com.Atavi.bsm.util.ResponseStructure;
 import jakarta.validation.Valid;
@@ -19,7 +20,7 @@ public class UserController
 {
     private final UserService userService;
     private final RestResponseBuilder responseBuilder;
-
+   // private final AdminService adminService;
 //    @PostMapping("/registerUser")
 //    public ResponseEntity<ResponseStructure<User>> addUser(@RequestBody User user)
 //
@@ -41,7 +42,7 @@ public class UserController
 
     //Using DTO rather than entity directly which is to be done always and right approach
     @PostMapping("/registerUser")
-    public ResponseEntity<ResponseStructure<UserResponse>> registerUser(@RequestBody @Valid UserRequest userRequest)
+    public ResponseEntity<ResponseStructure<UserResponse>> registerUser(@RequestBody UserRequest userRequest)
     {
         UserResponse  userResponse = userService.addUser(userRequest);
         return responseBuilder.success(HttpStatus.CREATED, "User Created", userResponse);
@@ -62,5 +63,5 @@ public class UserController
     }
 
 
+    }
 
-}
