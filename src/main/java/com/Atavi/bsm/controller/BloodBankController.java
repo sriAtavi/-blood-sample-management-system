@@ -1,7 +1,9 @@
 package com.Atavi.bsm.controller;
 
 import com.Atavi.bsm.requestDTO.BloodBankRequest;
+import com.Atavi.bsm.requestDTO.HospitalRequest;
 import com.Atavi.bsm.responseDTO.BloodBankResponse;
+import com.Atavi.bsm.responseDTO.HospitalResponse;
 import com.Atavi.bsm.service.BloodBankService;
 import com.Atavi.bsm.util.ResponseStructure;
 import com.Atavi.bsm.util.RestResponseBuilder;
@@ -18,10 +20,10 @@ public class BloodBankController {
 
     private final BloodBankService bloodBankService;
     private final RestResponseBuilder responseBuilder;
-    @PostMapping("/blood-banks")
-    public ResponseEntity<ResponseStructure<BloodBankResponse>> addBloodBank(@RequestBody BloodBankRequest bloodBankRequest)
+    @PostMapping("/blood-banks/{adminId}")
+    public ResponseEntity<ResponseStructure<BloodBankResponse>> addBloodBankWithAdmin(@RequestBody BloodBankRequest bloodBankRequest,@PathVariable int adminId)
     {
-        BloodBankResponse  bloodBankResponse = bloodBankService.addBloodBank(bloodBankRequest);
+        BloodBankResponse  bloodBankResponse = bloodBankService.addBloodBankWithAdmin(bloodBankRequest,adminId);
         return responseBuilder.success(HttpStatus.CREATED, "Blood Bank Created", bloodBankResponse);
     }
 
@@ -44,4 +46,5 @@ public class BloodBankController {
         List<BloodBankResponse>  bloodBankResponse = bloodBankService.findBloodBanks();
         return responseBuilder.success(HttpStatus.FOUND, "Blood Banks List", bloodBankResponse);
     }
+
 }

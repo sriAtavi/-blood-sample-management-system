@@ -6,7 +6,7 @@ import com.Atavi.bsm.responseDTO.BloodBankResponse;
 import java.util.List;
 
 public interface BloodBankService {
-    BloodBankResponse addBloodBank(BloodBankRequest bloodBankRequest);
+    BloodBankResponse addBloodBankWithAdmin(BloodBankRequest bloodBankRequest,int adminId);
 
     BloodBankResponse findBloodBankById(int bloodBankId);
 

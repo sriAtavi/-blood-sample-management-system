@@ -1,11 +1,13 @@
 package com.Atavi.bsm.serviceImpl;
 
 
+import com.Atavi.bsm.entity.Admin;
 import com.Atavi.bsm.entity.BloodBank;
 import com.Atavi.bsm.exception.BloodBankNotFoundException;
+import com.Atavi.bsm.repository.AdminRepository;
 import com.Atavi.bsm.repository.BloodBankRepository;
 import com.Atavi.bsm.requestDTO.BloodBankRequest;
-
+import com.Atavi.bsm.exception.AdminNotFoundException;
 import com.Atavi.bsm.responseDTO.BloodBankResponse;
 
 import com.Atavi.bsm.service.BloodBankService;
@@ -21,6 +23,7 @@ import java.util.Optional;
 public class BloodBankServiceImpl implements BloodBankService {
 
     private final BloodBankRepository bloodBankRepository;
+    private final AdminRepository adminRepository;
 
     private BloodBank mapBloodBankToBloodBankRequest(BloodBankRequest bloodBankRequest, BloodBank bloodBank) {
         bloodBank.setBloodBankName(bloodBankRequest.getBloodBankName());
@@ -36,14 +39,34 @@ public class BloodBankServiceImpl implements BloodBankService {
                 .build();
     }
 
+
+// This is to add only Blood Bank details without admin
+//    @Override
+//    public BloodBankResponse addBloodBank(BloodBankRequest bloodBankRequest) {
+//       BloodBank bloodBank = mapBloodBankToBloodBankRequest(bloodBankRequest,new BloodBank());
+//       bloodBankRepository.save(bloodBank);//      return mapBloodBankToBloodBankResponse(bloodBank);
+//    }
+
+
+// This method Associates Admin and creates Blood Bank entity
     @Override
-    public BloodBankResponse addBloodBank(BloodBankRequest bloodBankRequest) {
-       BloodBank bloodBank = mapBloodBankToBloodBankRequest(bloodBankRequest,new BloodBank());
-       bloodBankRepository.save(bloodBank);
+     public BloodBankResponse addBloodBankWithAdmin(BloodBankRequest bloodBankRequest,int adminId) {
+        Optional<Admin> admin = adminRepository.findById(adminId);
 
-       return mapBloodBankToBloodBankResponse(bloodBank);
+        if (admin.isEmpty())
+            throw new AdminNotFoundException("Admin Not found for the given Admin Id");
+
+        List<Admin> adminList = new ArrayList<>();
+        adminList.add(admin.get());
+        BloodBank bloodBank = BloodBank.builder()
+                .admin(adminList)
+                .bloodBankName(bloodBankRequest.getBloodBankName())
+                .emergencyUnitCount(bloodBankRequest.getEmergencyUnitCount())
+                .build();
+
+        bloodBankRepository.save(bloodBank);
+        return mapBloodBankToBloodBankResponse(bloodBank);
     }
-
     @Override
     public BloodBankResponse findBloodBankById(int bloodBankId) {
         Optional<BloodBank> bloodBankResult = bloodBankRepository.findById(bloodBankId);
