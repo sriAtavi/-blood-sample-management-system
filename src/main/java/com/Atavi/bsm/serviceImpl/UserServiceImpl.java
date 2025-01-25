@@ -11,6 +11,8 @@ import com.Atavi.bsm.responseDTO.UserResponse;
 import com.Atavi.bsm.service.UserService;
 import com.Atavi.bsm.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,6 +21,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService
 {
+
+
+    private final PasswordEncoder passwordEncoder; // Constructor Injection
     private final AdminRepository adminRepository;
     //Factory Method to Map the User Entity to UserRequest-DTO which will be using frequently and making this as Non-Static which would be safer
     // while Testing
@@ -84,6 +89,7 @@ public class UserServiceImpl implements UserService
     public UserResponse addUser(UserRequest userRequest) {
         User user = mapUserRequestToUser(userRequest,new User());
                 user.setUserRole(UserRole.USER);
+                user.setPassword(passwordEncoder.encode(user.getPassword())); // Encoding Or Encrypting Password which is entered by user
                 userRepository.save(user);
 
                 return mapToUserResponse(user);

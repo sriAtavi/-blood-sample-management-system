@@ -22,4 +22,7 @@ public class BloodBank {
 
     @OneToMany
     private List<Admin> admin;
+
+    @OneToMany
+    private List<BloodSample> bloodSample;
 }
