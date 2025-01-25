@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: blood-sample-management-system
+
+  datasource:
+    username: root
+    password: tiger
+    url: jdbc:mysql://localhost:3306/springboot_bsm_DB?createDatabaseIfNotExist=true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
