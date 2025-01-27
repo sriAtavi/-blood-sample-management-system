@@ -6,9 +6,9 @@ import com.Atavi.bsm.responseDTO.UserResponse;
 import com.Atavi.bsm.security.AuthUtil;
 import com.Atavi.bsm.util.RestResponseBuilder;
 import com.Atavi.bsm.util.ResponseStructure;
-import jakarta.validation.Valid;
+//import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +17,12 @@ import com.Atavi.bsm.entity.User;
 
 @RestController
 @AllArgsConstructor //(Coz of this @Autowired (Field injection)is not used)
-public class UserController
-{
+public class UserController {
+
     private final UserService userService;
     private final RestResponseBuilder responseBuilder;
     private final AuthUtil authUtil;
-   // private final AdminService adminService;
+    // private final AdminService adminService;
 //    @PostMapping("/registerUser")
 //    public ResponseEntity<ResponseStructure<User>> addUser(@RequestBody User user)
 //
@@ -44,9 +44,8 @@ public class UserController
 
     //Using DTO rather than entity directly which is to be done always and right approach
     @PostMapping("/registerUser")
-    public ResponseEntity<ResponseStructure<UserResponse>> registerUser(@RequestBody UserRequest userRequest)
-    {
-        UserResponse  userResponse = userService.addUser(userRequest);
+    public ResponseEntity<ResponseStructure<UserResponse>> registerUser(@RequestBody UserRequest userRequest) {
+        UserResponse userResponse = userService.addUser(userRequest);
         return responseBuilder.success(HttpStatus.CREATED, "User Created", userResponse);
     }
 
@@ -59,8 +58,7 @@ public class UserController
 //    }
 
     @GetMapping("/account")
-    public ResponseEntity<ResponseStructure<UserResponse>> findByUserId()
-    {
+    public ResponseEntity<ResponseStructure<UserResponse>> findByUserId() {
         UserResponse userResponse = userService.findUserAccount(); // This User account is found through AuthUtil User info
         return responseBuilder.success(HttpStatus.FOUND, "User Found", userResponse);
     }
@@ -73,20 +71,24 @@ public class UserController
 //}
 
 
-//We will be updating the user info based on the AuthUtil user found based on the Email not by the user ID
-      @PutMapping("/users")
-    public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest userRequest)
-   {
-        UserResponse  userResponse = userService.updateUser(userRequest);
+    //We will be updating the user info based on the AuthUtil user found based on the Email not by the user ID
+    @PutMapping("/users")
+    public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest userRequest) {
+        UserResponse userResponse = userService.updateUser(userRequest);
         return responseBuilder.success(HttpStatus.CREATED, "User Created", userResponse);
     }
 
     @PatchMapping("/users/{userID}")
-    public ResponseEntity<ResponseStructure<UserResponse>> verfiedUser(@RequestBody UserRequest userRequest ,@PathVariable int userID,@RequestParam boolean verified)
-    {
-        UserResponse  userResponse = userService.verfiedUser(userRequest,userID,verified);
+    public ResponseEntity<ResponseStructure<UserResponse>> verfiedUser(@RequestBody UserRequest userRequest, @PathVariable int userID, @RequestParam boolean verified) {
+        UserResponse userResponse = userService.verfiedUser(userRequest, userID, verified);
         return responseBuilder.success(HttpStatus.CREATED, "User Verified", userResponse);
     }
 
+    @PatchMapping("/user")
+    public ResponseEntity<ResponseStructure<UserResponse>> addLastDonatedAt(@RequestBody UserRequest userRequest) {
+        UserResponse userResponse = userService.addLastDonatedAt(userRequest);
+        return responseBuilder.success(HttpStatus.CREATED, "Last Donated Date Updated", userResponse);
+
     }
 
+}

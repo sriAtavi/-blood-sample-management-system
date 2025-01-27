@@ -25,7 +25,9 @@ public interface  UserService
     // 'updateUser()' & 'findUserAccount()' now uses the Authorised user or Currently logged-in user who is able to find and update his details only
 
     UserResponse verfiedUser(UserRequest userRequest, int userID,boolean verified);
+
     //verfiedUser() => used to patch map the Verified user by Admin not by any user by himself
 
+    UserResponse addLastDonatedAt(UserRequest userRequest);
 
 }
