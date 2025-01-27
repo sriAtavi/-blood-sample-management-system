@@ -15,5 +15,5 @@ public class AdminRequest {
 
     private User user;
 
-    private AdminType adminType;
+    //private AdminType adminType;
 }

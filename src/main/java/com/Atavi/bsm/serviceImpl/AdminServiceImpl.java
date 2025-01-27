@@ -11,6 +11,7 @@ import com.Atavi.bsm.requestDTO.UserRequest;
 import com.Atavi.bsm.responseDTO.UserResponse;
 import com.Atavi.bsm.service.AdminService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,12 +23,15 @@ public class AdminServiceImpl implements AdminService {
 
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
+    private final PasswordEncoder passwordEncoder;
+
     private  User mapUserRequestToUser(UserRequest userRequest,User user) {
                 user.setUserName(userRequest.getUserName());
                 user.setPassword(userRequest.getPassword());
                 user.setEmail(userRequest.getEmail());
                 user.setBloodGroup(userRequest.getBloodGroup());
                 user.setAge(userRequest.getAge());
+                user.setGender(userRequest.getGender());
                 user.setAvailableCity(userRequest.getAvailableCity());
                 user.setLastDonatedAt(userRequest.getLastDonatedAt());
                 return user;
@@ -54,7 +58,8 @@ private UserResponse mapToUserResponse(User user) {
             throw new UserNotFoundException("Failed to find user");
 
         User existUser = userResult.get();
-        existUser.setUserRole(UserRole.ADMIN);
+        //existUser.setUserRole(UserRole.ADMIN);
+        existUser.setUserRole(UserRole.GUEST_ADMIN); // We are using Roles from User Entity only
 
         mapUserRequestToUser(userRequest,existUser);
 
@@ -70,11 +75,12 @@ private UserResponse mapToUserResponse(User user) {
     public UserResponse addAdminUsers(UserRequest userRequest) {
 
         User user = mapUserRequestToUser(userRequest,new User());
-        user.setUserRole(UserRole.ADMIN);
+        //user.setUserRole(UserRole.ADMIN);
+        user.setUserRole(UserRole.OWNER_ADMIN);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
         Admin admin = Admin.builder()
-                .adminType(AdminType.OWNER)
                 .user(user)
                 .build();
 

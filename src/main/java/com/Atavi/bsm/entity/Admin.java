@@ -21,5 +21,6 @@ public class Admin {
     @OneToOne
     private User user;
 
-    private AdminType adminType;
+    //This won't be used since we are creating User Roles in User Entity itself instead of creating Admin Types and User Types seperately
+   // private AdminType adminType;
 }

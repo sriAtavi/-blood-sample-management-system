@@ -8,6 +8,7 @@ import com.Atavi.bsm.exception.UserNotFoundException;
 import com.Atavi.bsm.repository.AdminRepository;
 import com.Atavi.bsm.requestDTO.UserRequest;
 import com.Atavi.bsm.responseDTO.UserResponse;
+import com.Atavi.bsm.security.AuthUtil;
 import com.Atavi.bsm.service.UserService;
 import com.Atavi.bsm.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService
 
     private final PasswordEncoder passwordEncoder; // Constructor Injection
     private final AdminRepository adminRepository;
+    private final AuthUtil authUtil;
     //Factory Method to Map the User Entity to UserRequest-DTO which will be using frequently and making this as Non-Static which would be safer
     // while Testing
     // The below method signature can be used only for adding new User
@@ -53,6 +55,7 @@ public class UserServiceImpl implements UserService
                 user.setEmail(userRequest.getEmail());
                 user.setBloodGroup(userRequest.getBloodGroup());
                 user.setAge(userRequest.getAge());
+                user.setGender(userRequest.getGender());
                 user.setAvailableCity(userRequest.getAvailableCity());
                 user.setLastDonatedAt(userRequest.getLastDonatedAt());
                 return user;
@@ -98,32 +101,62 @@ public class UserServiceImpl implements UserService
 
 
 
+//    @Override
+//    public UserResponse findByUserId(int userId) {
+//            Optional<User> userResult = userRepository.findById(userId);
+//
+//            if(userResult.isEmpty())
+//                throw new UserNotFoundException("User Not Found");
+//
+//            User user = userResult.get();
+//
+//            return mapToUserResponse(user);
+//    }
+
+
+
+//    @Override
+//    public UserResponse updateUser(UserRequest userRequest,int userId) {
+//        Optional<User> userResult = userRepository.findById(userId);
+//
+//        if(userResult.isEmpty())
+//            throw new UserNotFoundException("Failed To Update");
+//
+//
+//        User existinguser = userResult.get();
+//       // existinguser= mapUserRequestToUser(userRequest,existinguser);
+//        mapUserRequestToUser(userRequest,existinguser);
+//        userRepository.save(existinguser);
+//
+//        return mapToUserResponse(existinguser);
+//
+//} => This method
+
     @Override
-    public UserResponse findByUserId(int userId) {
-            Optional<User> userResult = userRepository.findById(userId);
+    public UserResponse updateUser(UserRequest userRequest) {
 
-            if(userResult.isEmpty())
-                throw new UserNotFoundException("User Not Found");
-
-            User user = userResult.get();
-
-            return mapToUserResponse(user);
-    }
-
-    @Override
-    public UserResponse updateUser(UserRequest userRequest,int userId) {
-        Optional<User> userResult = userRepository.findById(userId);
-
-        if(userResult.isEmpty())
-            throw new UserNotFoundException("Failed To Update");
-
-
-        User existinguser = userResult.get();
-       // existinguser= mapUserRequestToUser(userRequest,existinguser);
-        mapUserRequestToUser(userRequest,existinguser);
+      User existinguser = authUtil.getCurrentUserInfo(); //Exception is handled in AuthUtil
+      this.mapUserRequestToUser(userRequest,existinguser);
         userRepository.save(existinguser);
 
         return mapToUserResponse(existinguser);
 
-}
+    }
+
+    @Override
+    public UserResponse findUserAccount() {
+        User currentUserDetails = authUtil.getCurrentUserInfo();
+           return mapToUserResponse(currentUserDetails);
+    }
+
+    @Override
+    public UserResponse verfiedUser(UserRequest userRequest, int userID,boolean verified) {
+
+        User existinguser = authUtil.getCurrentUserInfo();//Exception is handled in AuthUtil
+        existinguser.setVerified(verified);
+        this.mapUserRequestToUser(userRequest,existinguser);
+        userRepository.save(existinguser);
+
+        return mapToUserResponse(existinguser);
+    }
 }
