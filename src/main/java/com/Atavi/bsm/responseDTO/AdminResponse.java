@@ -18,6 +18,6 @@ public class AdminResponse {
 
     private User user;
 
-    private AdminType adminType;
+   // private AdminType adminType;
 }
 

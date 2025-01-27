@@ -1,5 +1,7 @@
 package com.Atavi.bsm.enums;
 
 public enum UserRole {
-    USER,ADMIN
+    USER,
+    OWNER_ADMIN,
+    GUEST_ADMIN
 }

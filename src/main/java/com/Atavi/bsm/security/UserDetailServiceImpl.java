@@ -22,7 +22,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userResult =  userRepository.findByEmail("bhoomi@gmail");
+        Optional<User> userResult =  userRepository.findByEmail(username);
         if(userResult.isEmpty())
        throw new UsernameNotFoundException("Failed TO Authenticate User"); // 'UsernameNotFoundException' is Provided from SpringSecurity
             System.out.println();
@@ -34,6 +34,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(userData.getEmail())
                 .password(userData.getPassword())
+                .authorities(userData.getUserRole().name()) //UserRole is Enum type, to get the name of the Enums, we can use 'getUserRole().name()' and 'authorities() method accepts String var args
                 .build();
     }
 }

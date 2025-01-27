@@ -3,6 +3,7 @@ package com.Atavi.bsm.controller;
 import com.Atavi.bsm.requestDTO.UserRequest;
 import com.Atavi.bsm.responseDTO.UserResponse;
 
+import com.Atavi.bsm.security.AuthUtil;
 import com.Atavi.bsm.util.RestResponseBuilder;
 import com.Atavi.bsm.util.ResponseStructure;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ public class UserController
 {
     private final UserService userService;
     private final RestResponseBuilder responseBuilder;
+    private final AuthUtil authUtil;
    // private final AdminService adminService;
 //    @PostMapping("/registerUser")
 //    public ResponseEntity<ResponseStructure<User>> addUser(@RequestBody User user)
@@ -49,19 +51,42 @@ public class UserController
     }
 
 
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<ResponseStructure<UserResponse>> findByUserId(@PathVariable int userId)
+//    @GetMapping("/users/{userId}")
+//    public ResponseEntity<ResponseStructure<UserResponse>> findByUserId(@PathVariable int userId)
+//    {
+//      UserResponse userResponse = userService.findByUserId(userId);
+//        return responseBuilder.success(HttpStatus.FOUND, "User Found", userResponse);
+//    }
+
+    @GetMapping("/account")
+    public ResponseEntity<ResponseStructure<UserResponse>> findByUserId()
     {
-      UserResponse userResponse = userService.findByUserId(userId);
+        UserResponse userResponse = userService.findUserAccount(); // This User account is found through AuthUtil User info
         return responseBuilder.success(HttpStatus.FOUND, "User Found", userResponse);
     }
-    @PutMapping("/users/{userId}")
-    public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest userRequest,@PathVariable int userId)
-    {
-        UserResponse  userResponse = userService.updateUser(userRequest,userId);
+
+//    @PutMapping("/users/{userId}")
+//    public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest userRequest,@PathVariable int userId)
+//    {
+//        UserResponse  userResponse = userService.updateUser(userRequest,userId);
+//        return responseBuilder.success(HttpStatus.CREATED, "User Created", userResponse);
+//}
+
+
+//We will be updating the user info based on the AuthUtil user found based on the Email not by the user ID
+      @PutMapping("/users")
+    public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest userRequest)
+   {
+        UserResponse  userResponse = userService.updateUser(userRequest);
         return responseBuilder.success(HttpStatus.CREATED, "User Created", userResponse);
     }
 
+    @PatchMapping("/users/{userID}")
+    public ResponseEntity<ResponseStructure<UserResponse>> verfiedUser(@RequestBody UserRequest userRequest ,@PathVariable int userID,@RequestParam boolean verified)
+    {
+        UserResponse  userResponse = userService.verfiedUser(userRequest,userID,verified);
+        return responseBuilder.success(HttpStatus.CREATED, "User Verified", userResponse);
+    }
 
     }
 
