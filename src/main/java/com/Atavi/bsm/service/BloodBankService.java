@@ -12,5 +12,5 @@ public interface BloodBankService {
 
     BloodBankResponse updateBloodBank(BloodBankRequest bloodBankRequest, int bloodBankId);
 
-    List<BloodBankResponse> findBloodBanks();
+    List<BloodBankResponse> findBloodBanks(List<String> city);
 }

@@ -159,4 +159,14 @@ public class UserServiceImpl implements UserService
 
         return mapToUserResponse(existinguser);
     }
+
+    @Override
+    public UserResponse addLastDonatedAt(UserRequest userRequest) {
+        User existinguser = authUtil.getCurrentUserInfo();//Exception is handled in AuthUtil
+        existinguser.setLastDonatedAt(userRequest.getLastDonatedAt());
+        this.mapUserRequestToUser(userRequest,existinguser);
+        userRepository.save(existinguser);
+
+        return mapToUserResponse(existinguser);
+    }
 }

@@ -20,6 +20,7 @@ public class BloodBankController {
 
     private final BloodBankService bloodBankService;
     private final RestResponseBuilder responseBuilder;
+
     @PostMapping("/blood-banks/{adminId}")
     public ResponseEntity<ResponseStructure<BloodBankResponse>> addBloodBankWithAdmin(@RequestBody BloodBankRequest bloodBankRequest,@PathVariable int adminId)
     {
@@ -41,9 +42,10 @@ public class BloodBankController {
     }
 
     @GetMapping("/blood-Banks")
-    public ResponseEntity<ResponseStructure<List<BloodBankResponse>>> findAllBloodBank()
+    //public ResponseEntity<ResponseStructure<List<BloodBankResponse>>> findAllBloodBank()
+    public ResponseEntity<ResponseStructure<List<BloodBankResponse>>> findAllBloodBank(@RequestParam List<String> cities)
     {
-        List<BloodBankResponse>  bloodBankResponse = bloodBankService.findBloodBanks();
+        List<BloodBankResponse>  bloodBankResponse = bloodBankService.findBloodBanks(cities);
         return responseBuilder.success(HttpStatus.FOUND, "Blood Banks List", bloodBankResponse);
     }
 

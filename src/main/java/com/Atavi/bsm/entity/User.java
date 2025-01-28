@@ -39,6 +39,7 @@ public class User
     private Admin admin;
 
 
-
+    @OneToOne
+    private Address address;
 
 }

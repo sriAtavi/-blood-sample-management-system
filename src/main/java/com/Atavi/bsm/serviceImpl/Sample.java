@@ -1,6 +1,8 @@
 package com.Atavi.bsm.serviceImpl;
 
+import com.Atavi.bsm.entity.BloodBank;
 import com.Atavi.bsm.entity.BloodSample;
+import com.Atavi.bsm.repository.BloodBankRepository;
 import com.Atavi.bsm.repository.BloodSampleRepositiry;
 import com.Atavi.bsm.requestDTO.BloodSampleRequest;
 import com.Atavi.bsm.responseDTO.BloodSampleResponse;
@@ -9,19 +11,23 @@ import com.Atavi.bsm.util.RestResponseBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
-public class BloodServiceImpl implements BloodSampleService {
+public class Sample implements BloodSampleService {
 
-    BloodSampleRepositiry bloodSampleRepositiry;
-    RestResponseBuilder restResponseBuilder;
+    private final BloodSampleRepositiry bloodSampleRepositiry;
+    private final RestResponseBuilder restResponseBuilder;
+    private final BloodBankRepository bloodBankRepository;
 
     public BloodSample mapSampleToBloodSampleRequest(BloodSampleRequest sampleRequest,BloodSample sample) {
        sample.setBloodGroup(sampleRequest.getBloodGroup());
-       sample.setAvailability(sampleRequest.isAvailability());
+       //sample.setAvailability(sampleRequest.isAvailability());
        sample.setQuantity(sampleRequest.getQuantity());
-       sample.setAvailableUnits(sampleRequest.getAvailableUnits());
-       sample.setEmergencyUnits(sampleRequest.getEmergencyUnits());
+
        return sample;
     }
 
@@ -37,9 +43,26 @@ public class BloodServiceImpl implements BloodSampleService {
     }
 
     @Override
-    public BloodSampleResponse addBloodSample(BloodSampleRequest sampleRequest) {
+    public BloodSampleResponse addBloodSample(BloodSampleRequest sampleRequest, int bloodBankId) {
+
+        Optional<BloodBank> bloodBank = bloodBankRepository.findById(bloodBankId);
+
+        if(bloodBank.isEmpty())
+        throw new RuntimeException("blood bank not found");
+        BloodBank bloodBankDetails = bloodBank.get();
+
 
         BloodSample newSample = mapSampleToBloodSampleRequest(sampleRequest, new BloodSample());
+        List<BloodSample> bloodSampleList = new ArrayList<>();
+
+
+        newSample.setAvailableUnits(sampleRequest.getQuantity() - bloodBankDetails.getEmergencyUnitCount());
+        newSample.setEmergencyUnits(bloodBankDetails.getEmergencyUnitCount());
+        bloodSampleList.add(newSample);
+        bloodBankDetails.setBloodSample(bloodSampleList);
+
+
+        bloodSampleRepositiry.save(newSample);
         bloodSampleRepositiry.save(newSample);
 
         return mapSampleToBloodSampleResponse(newSample);

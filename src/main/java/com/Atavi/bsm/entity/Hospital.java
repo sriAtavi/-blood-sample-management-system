@@ -23,4 +23,6 @@ public class Hospital {
     private List<Admin> admin;
 
 
+    @OneToOne
+    private Address address;
 }
