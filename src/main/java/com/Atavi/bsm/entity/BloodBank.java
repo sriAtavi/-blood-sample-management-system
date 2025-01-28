@@ -25,4 +25,7 @@ public class BloodBank {
 
     @OneToMany
     private List<BloodSample> bloodSample;
+
+    @OneToOne
+    private Address address;
 }

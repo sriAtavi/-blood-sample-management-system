@@ -29,7 +29,7 @@ public class SecurityConfig {
     {
         return http.csrf(csrf->csrf.disable()) // Disabling CSRF Protection provided by SpringSecurity by default
                 .authorizeHttpRequests(authorize->
-                        authorize.requestMatchers("/registerUser","/blood-Banks","/samples","adminUsers")// Deciding which endpoints to be given permission to use without Authentication
+                        authorize.requestMatchers("/registerUser","/blood-Banks","/samples","/adminUsers")// Deciding which endpoints to be given permission to use without Authentication
                                 .permitAll()// THis line permits the endpoints mentioned above
                             //    .requestMatchers("/users/{userId}") // Authorizing particular endPoint means giving authorities to do any task
                             //    .hasAuthority("OWNER_ADMIN") // Role Based Authorization

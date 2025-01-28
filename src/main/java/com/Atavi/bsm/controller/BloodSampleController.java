@@ -8,6 +8,7 @@ import com.Atavi.bsm.util.RestResponseBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,10 +20,10 @@ public class BloodSampleController {
    private final  BloodSampleService bloodSampleService;
    private  final RestResponseBuilder restResponseBuilder;
 
-    @PostMapping("/samples")
-    public ResponseEntity<ResponseStructure<BloodSampleResponse>> addBloodSample(@RequestBody BloodSampleRequest sampleRequest)
+    @PostMapping("/samples/{bloodBankId}")
+    public ResponseEntity<ResponseStructure<BloodSampleResponse>> addBloodSample(@RequestBody BloodSampleRequest sampleRequest, @PathVariable int bloodBankId)
     {
-        BloodSampleResponse sampleResponse = bloodSampleService.addBloodSample(sampleRequest);
+        BloodSampleResponse sampleResponse = bloodSampleService.addBloodSample(sampleRequest,bloodBankId);
         return restResponseBuilder.success(HttpStatus.CREATED,"Blood Sample added successfully",sampleResponse);
     }
 }

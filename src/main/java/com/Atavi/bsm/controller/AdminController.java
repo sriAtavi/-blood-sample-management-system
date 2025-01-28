@@ -21,6 +21,7 @@ public class AdminController {
     //RBAC => Role Based Access Control
     // @PreAuthorize => permits us to provide Authorization to whichever endpoints has the authorities at Method Level instead of giving authorities
     // to endpoints separately in SecurityFilterChain classes
+    //@PostAuthorize
     @PreAuthorize("hasAuthority('OWNER_ADMIN')")
    @PutMapping("/users/{userId}")
    public ResponseEntity<ResponseStructure<UserResponse>> promoteUser(@RequestBody UserRequest userRequest, @PathVariable int userId)

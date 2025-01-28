@@ -59,6 +59,7 @@ public class BloodBankServiceImpl implements BloodBankService {
         List<Admin> adminList = new ArrayList<>();
         adminList.add(admin.get());
         BloodBank bloodBank = BloodBank.builder()
+
                 .admin(adminList)
                 .bloodBankName(bloodBankRequest.getBloodBankName())
                 .emergencyUnitCount(bloodBankRequest.getEmergencyUnitCount())
@@ -97,8 +98,9 @@ public class BloodBankServiceImpl implements BloodBankService {
     }
 
     @Override
-    public List<BloodBankResponse> findBloodBanks() {
-       List<BloodBank> bloodBankList =  bloodBankRepository.findAll();
+    public List<BloodBankResponse> findBloodBanks(List<String> cities) {
+       //List<BloodBank> bloodBankList =  bloodBankRepository.findAll();
+        List<BloodBank> bloodBankList = bloodBankRepository.findByAddress_CityIn(cities);
        List<BloodBankResponse> list = new ArrayList<>();
 
        for(BloodBank bloodBank : bloodBankList){
