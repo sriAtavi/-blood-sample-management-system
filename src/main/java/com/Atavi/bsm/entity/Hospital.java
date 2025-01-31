@@ -1,5 +1,6 @@
 package com.Atavi.bsm.entity;
 
+import com.Atavi.bsm.requestDTO.DonatationRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,10 +20,13 @@ public class Hospital {
     private int hospitalId;
     private String hospitalName;
 
-    @OneToMany
+    @OneToMany(mappedBy = "hospital", fetch = FetchType.EAGER)
     private List<Admin> admin;
-
 
     @OneToOne
     private Address address;
+
+
+    @OneToMany
+    private List<DonationRequest> DonationRequest;
 }

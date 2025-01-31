@@ -28,6 +28,25 @@ public class RestResponseBuilder
                         .rootCause(rootCause)
                         .build());
     }
+
+    //30-01-2025
+    // Creating Response Entity structure for Page Structure
+    public <T> ResponseEntity<PageStructure<T>> success(HttpStatus status, String message, T rootCause, int page, int totalPages,int size)
+    {
+        PageStructure<T> pageStructure = new PageStructure<T>();
+        pageStructure.setStatus(status.value());
+        pageStructure.setMessage(message);
+        pageStructure.setData(rootCause);
+        pageStructure.setPage(page);
+        pageStructure.setTotalPages(totalPages);
+        pageStructure.setSize(size);
+
+        return ResponseEntity.status(status)
+                .body(pageStructure);
+
+
+    }
+
 }
 
 

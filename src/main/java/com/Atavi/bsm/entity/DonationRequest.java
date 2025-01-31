@@ -7,22 +7,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
 @Entity
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BloodSample {
-
+public class DonationRequest
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int sampleId;
-    private BloodGroup bloodGroup;
-    private int quantity;
-    private boolean availability;
-    private int emergencyUnits;
-    private int availableUnits;
+    private int donationId;
+    private LocalDate donationRequestDate;
+    private LocalTime donationRequestTime;
 
-    @ManyToOne
-    private BloodBank bloodBank;
+    private List<BloodGroup> bloodGroup;
+
+
+
 }

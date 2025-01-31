@@ -20,12 +20,15 @@ public class BloodBank {
     private String bloodBankName;
     private int emergencyUnitCount;
 
-    @OneToMany
+    @OneToMany(mappedBy = "bloodBank", fetch = FetchType.EAGER) // mappedBy creates bloodBankId foreign key column inAdmin Table which restricts Extra Table having 'BloodBank-Admin' relation
     private List<Admin> admin;
 
-    @OneToMany
+    @OneToMany(mappedBy = "bloodBank")
     private List<BloodSample> bloodSample;
 
     @OneToOne
     private Address address;
+
+    @OneToMany
+    private List<DonationRequest> donationRequest;
 }

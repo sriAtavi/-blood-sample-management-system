@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
+
 
 
 import java.time.LocalDate;
@@ -41,5 +43,9 @@ public class User
 
     @OneToOne
     private Address address;
+
+    //30-01-2025
+    @OneToMany(mappedBy = "user") // Survey Table will have 'User' Foreign Key
+    private List<Survey> survey;
 
 }
