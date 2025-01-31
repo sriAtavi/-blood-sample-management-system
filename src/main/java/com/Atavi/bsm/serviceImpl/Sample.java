@@ -49,21 +49,24 @@ public class Sample implements BloodSampleService {
 
         if(bloodBank.isEmpty())
         throw new RuntimeException("blood bank not found");
+
         BloodBank bloodBankDetails = bloodBank.get();
 
 
         BloodSample newSample = mapSampleToBloodSampleRequest(sampleRequest, new BloodSample());
-        List<BloodSample> bloodSampleList = new ArrayList<>();
+//        List<BloodSample> bloodSampleList = new ArrayList<>();
 
 
         newSample.setAvailableUnits(sampleRequest.getQuantity() - bloodBankDetails.getEmergencyUnitCount());
         newSample.setEmergencyUnits(bloodBankDetails.getEmergencyUnitCount());
-        bloodSampleList.add(newSample);
-        bloodBankDetails.setBloodSample(bloodSampleList);
+        newSample.setBloodBank(bloodBankDetails);
+
+//        bloodSampleList.add(newSample);
+//        bloodBankDetails.setBloodSample(bloodSampleList);
 
 
         bloodSampleRepositiry.save(newSample);
-        bloodSampleRepositiry.save(newSample);
+        bloodBankRepository.save(bloodBankDetails);
 
         return mapSampleToBloodSampleResponse(newSample);
     }
