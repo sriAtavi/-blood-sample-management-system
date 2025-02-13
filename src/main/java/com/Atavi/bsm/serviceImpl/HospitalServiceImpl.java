@@ -1,6 +1,7 @@
 package com.Atavi.bsm.serviceImpl;
 
 import com.Atavi.bsm.entity.Admin;
+import com.Atavi.bsm.entity.BloodSample;
 import com.Atavi.bsm.entity.Hospital;
 import com.Atavi.bsm.entity.User;
 import com.Atavi.bsm.enums.AdminType;
@@ -42,13 +43,13 @@ public class HospitalServiceImpl implements HospitalService {
                .build();
    }
 
-    @Override
-    public HospitalResponse addHospital(HospitalRequest hospitalRequest) {
-        Hospital hospital = mapHospitalToHospitalRequest(hospitalRequest,new Hospital());
-        hospitalRepository.save(hospital);
-
-        return mapHospitalToHospitalResponse(hospital);
-    }
+//    @Override
+//    public HospitalResponse addHospital(HospitalRequest hospitalRequest) {
+//        Hospital hospital = mapHospitalToHospitalRequest(hospitalRequest,new Hospital());
+//        hospitalRepository.save(hospital);
+//
+//        return mapHospitalToHospitalResponse(hospital);
+//    }
 
     @Override
     public HospitalResponse findByHospitalId(int hospitalId) {
@@ -79,20 +80,29 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public HospitalResponse addHospitalAdmin(HospitalRequest hospitalRequest, int adminId) {
-        Optional<Admin> admin = adminRepository.findById(adminId);
+        Optional<Admin> adminDetails = adminRepository.findById(adminId);
 
-        if(admin.isEmpty())
+        if(adminDetails.isEmpty())
             throw new AdminNotFoundException("Admin Not found for the given Admin Id");
 
-        List<Admin> adminList = new ArrayList<>();
-        adminList.add(admin.get());
-        Hospital hospital = Hospital.builder()
-                .admin(adminList)
-                .hospitalName(hospitalRequest.getHospitalName())
-                .build();
+//        List<Admin> adminList = new ArrayList<>();
+//        adminList.add(admin.get());
+
+        Admin admin = adminDetails.get();
+
+
+        Hospital hospital = mapHospitalToHospitalRequest(hospitalRequest,new Hospital());
+        admin.setHospital(hospital);
+
+
         hospitalRepository.save(hospital);
+
+        adminRepository.save(admin);
+
         return mapHospitalToHospitalResponse(hospital);
+
     }
+
 
 //    @Override
 //    public HospitalResponse addHospitalAdmin(HospitalRequest hospitalRequest,int userId) {

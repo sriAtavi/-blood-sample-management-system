@@ -85,21 +85,25 @@ public class BloodBankServiceImpl implements BloodBankService
 // This method Associates Admin and creates Blood Bank entity
     @Override
      public BloodBankResponse addBloodBankWithAdmin(BloodBankRequest bloodBankRequest,int adminId) {
-        Optional<Admin> admin = adminRepository.findById(adminId);
+        Optional<Admin> adminDetails = adminRepository.findById(adminId);
 
-        if (admin.isEmpty())
+        if (adminDetails.isEmpty())
             throw new AdminNotFoundException("Admin Not found for the given Admin Id");
 
-        List<Admin> adminList = new ArrayList<>();
-        adminList.add(admin.get());
-        BloodBank bloodBank = BloodBank.builder()
-
-                .admin(adminList)
-                .bloodBankName(bloodBankRequest.getBloodBankName())
-                .emergencyUnitCount(bloodBankRequest.getEmergencyUnitCount())
-                .build();
+        Admin admin = adminDetails.get();
+//        BloodBank bloodBank = BloodBank.builder()
+//
+//                .admin(adminList)
+//                .bloodBankName(bloodBankRequest.getBloodBankName())
+//                .emergencyUnitCount(bloodBankRequest.getEmergencyUnitCount())
+//                .build();
+        BloodBank bloodBank = mapBloodBankToBloodBankRequest(bloodBankRequest,new BloodBank());
+        admin.setBloodBank(bloodBank);
 
         bloodBankRepository.save(bloodBank);
+
+        adminRepository.save(admin);
+
         return mapBloodBankToBloodBankResponse(bloodBank);
     }
     @Override

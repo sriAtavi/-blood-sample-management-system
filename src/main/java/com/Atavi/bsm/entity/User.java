@@ -48,4 +48,7 @@ public class User
     @OneToMany(mappedBy = "user") // Survey Table will have 'User' Foreign Key
     private List<Survey> survey;
 
+//    @OneToMany(mappedBy="user")
+//    private List<DonationLead> donationLeads;
+
 }

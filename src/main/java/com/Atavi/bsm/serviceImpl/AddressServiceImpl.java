@@ -1,13 +1,8 @@
 package com.Atavi.bsm.serviceImpl;
 
-import com.Atavi.bsm.entity.Address;
-import com.Atavi.bsm.entity.Admin;
-import com.Atavi.bsm.entity.BloodBank;
-import com.Atavi.bsm.entity.User;
+import com.Atavi.bsm.entity.*;
 import com.Atavi.bsm.exception.AdminNotFoundException;
-import com.Atavi.bsm.repository.AddressRespository;
-import com.Atavi.bsm.repository.AdminRepository;
-import com.Atavi.bsm.repository.BloodBankRepository;
+import com.Atavi.bsm.repository.*;
 import com.Atavi.bsm.requestDTO.AddressRequest;
 import com.Atavi.bsm.responseDTO.AddressResponse;
 import com.Atavi.bsm.responseDTO.UserResponse;
@@ -26,6 +21,8 @@ public class AddressServiceImpl implements AddressService {
     private final AdminRepository adminRepository;
     private final AddressRespository addressRespository;
     private final BloodBankRepository bloodBankRepository;
+    private final UserRepository userRepository;
+    private final HospitalRepository hospitalRepository;
 
     private Address mapAddressToAddressRequest(AddressRequest addressRequest,Address address) {
         address.setAddressLine(addressRequest.getAddressLine());
@@ -113,13 +110,37 @@ public class AddressServiceImpl implements AddressService {
 //    }
 
     @Override
-    public AddressResponse addHospitalAddress(AddressRequest addressRequest) {
-        return null;
+    public AddressResponse addHospitalAddress(AddressRequest addressRequest,int hospitalId) {
+        Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalId);
+
+        if (hospitalOptional.isEmpty())
+            throw new AdminNotFoundException("Hospital Not found for the given Hospital Id");
+
+
+        Hospital hospitalDetails = hospitalOptional.get();
+        Address hospitalAddress = mapAddressToAddressRequest(addressRequest,new Address());
+        hospitalDetails.setAddress(hospitalAddress);
+
+        addressRespository.save(hospitalAddress);
+        return mapToAddressToAddressResponse(hospitalAddress);
     }
 
     @Override
-    public AddressResponse addUserAddress(AddressRequest addressRequest) {
-        return null;
+    public AddressResponse addUserAddress(AddressRequest addressRequest,int userId) {
+
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isEmpty())
+            throw new AdminNotFoundException("user Not found for the given User Id");
+
+
+        User userDetails = userOptional.get();
+        Address userAddress = mapAddressToAddressRequest(addressRequest,new Address());
+        userDetails.setAddress(userAddress);
+
+        addressRespository.save(userAddress);
+        return mapToAddressToAddressResponse(userAddress);
+
     }
 
     @Override

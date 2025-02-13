@@ -2,6 +2,8 @@ package com.Atavi.bsm.repository;
 
 import com.Atavi.bsm.entity.Address;
 import com.Atavi.bsm.entity.BloodBank;
+import com.Atavi.bsm.entity.DonationRequest;
+import com.Atavi.bsm.entity.Hospital;
 import com.Atavi.bsm.enums.BloodGroup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,5 +38,7 @@ public interface BloodBankRepository extends JpaRepository<BloodBank, Integer> {
     public Page<BloodBank> findByAddress_CityInAndBloodSample_BloodGroupIn(List<String> address_city, List<BloodGroup> bloodSample_bloodGroup, Pageable pageable);
 
     //public List<BloodBank> findByAddress_CityIn(List<String> city)AndfindByBloodSample_BloodGroup(List<String> bloodGroup);
+
+    Optional<BloodBank> findByDonationRequest(DonationRequest donationRequest);
 }
 

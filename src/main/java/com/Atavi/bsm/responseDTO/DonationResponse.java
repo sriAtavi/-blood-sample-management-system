@@ -17,4 +17,5 @@ public class DonationResponse
     private int donationId;
     private LocalDate donationDate;
     private LocalTime donationTime;
+
 }
