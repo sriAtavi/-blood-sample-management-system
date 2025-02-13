@@ -24,4 +24,11 @@ public class DonationRequestController
         DonationRequestResponse donationResponse = donationRequestService.createDonationRequestForHospital(donationRequest,hospitalId);
         return restResponseBuilder.success(HttpStatus.CREATED,"Donataion Request by Hospital added Successfully",donationResponse);
     }
+
+    @PostMapping("/bloodBank-donationRequest/{bloodBankId}")
+    public ResponseEntity<ResponseStructure<DonationRequestResponse>> createDonationRequestFromBloodBank(@RequestBody DonatationRequestDto donationRequest, @PathVariable int bloodBankId)
+    {
+        DonationRequestResponse donationResponse = donationRequestService.createDonationRequestFromBloodBank(donationRequest,bloodBankId);
+        return restResponseBuilder.success(HttpStatus.CREATED,"Donation Request by BloodBank added Successfully",donationResponse);
+    }
 }

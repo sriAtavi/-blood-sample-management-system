@@ -4,7 +4,7 @@ import com.Atavi.bsm.requestDTO.HospitalRequest;
 import com.Atavi.bsm.responseDTO.HospitalResponse;
 
 public interface HospitalService {
-    HospitalResponse addHospital(HospitalRequest hospitalRequest);
+   // HospitalResponse addHospital(HospitalRequest hospitalRequest);
 
     HospitalResponse findByHospitalId(int hospitalId);
 

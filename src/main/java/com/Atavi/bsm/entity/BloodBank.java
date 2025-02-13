@@ -29,6 +29,6 @@ public class BloodBank {
     @OneToOne
     private Address address;
 
-    @OneToMany
+    @OneToMany//(fetch = FetchType.EAGER)
     private List<DonationRequest> donationRequest;
 }

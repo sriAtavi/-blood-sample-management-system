@@ -22,17 +22,17 @@ public class AddressController {
     private final AddressService addressService;
     private final RestResponseBuilder restResponseBuilder;
 
-    @PostMapping("/hospital-address")
-    public ResponseEntity<ResponseStructure<AddressResponse>> addHospitalAddress(@RequestBody AddressRequest addressRequest)
+    @PostMapping("/hospital-address/{hospitalId}")
+    public ResponseEntity<ResponseStructure<AddressResponse>> addHospitalAddress(@RequestBody AddressRequest addressRequest, @PathVariable int hospitalId)
     {
-        AddressResponse addressResponse = addressService.addHospitalAddress(addressRequest);
+        AddressResponse addressResponse = addressService.addHospitalAddress(addressRequest,hospitalId);
         return restResponseBuilder.success(HttpStatus.CREATED,"Hospital Address Added Successfully",addressResponse);
     }
 
-    @PostMapping("/user-address")
-    public ResponseEntity<ResponseStructure<AddressResponse>> addUserAddress(@RequestBody AddressRequest addressRequest)
+    @PostMapping("/user-address/{userId}")
+    public ResponseEntity<ResponseStructure<AddressResponse>> addUserAddress(@RequestBody AddressRequest addressRequest, @PathVariable int userId)
     {
-        AddressResponse addressResponse = addressService.addUserAddress(addressRequest);
+        AddressResponse addressResponse = addressService.addUserAddress(addressRequest,userId);
         return restResponseBuilder.success(HttpStatus.CREATED,"User Address Added Successfully",addressResponse);
     }
 

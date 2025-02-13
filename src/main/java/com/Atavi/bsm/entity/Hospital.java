@@ -27,6 +27,6 @@ public class Hospital {
     private Address address;
 
 
-    @OneToMany
-    private List<DonationRequest> DonationRequest;
+    @OneToMany//(fetch = FetchType.EAGER) // To avoid "org.springframework.orm.jpa.JpaSystemException => failed to lazily initialize a collection of role"
+    private List<DonationRequest> donationRequest;
 }

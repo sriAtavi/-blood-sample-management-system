@@ -5,7 +5,7 @@ spring:
   datasource:
     username: root
     password: tiger
-    url: jdbc:mysql://localhost:3306/springboot_bsm_DB?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/bsm_DB_forRealUsersTesting?createDatabaseIfNotExist=true
   jpa:
     show-sql: true
     hibernate:
@@ -13,3 +13,18 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: sridargowda13@gmail.com
+# This password is generated when we created 2-step verification in Gmail and created after generating App Passwords
+    password: eukpnkfvzhzlhqmm
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true

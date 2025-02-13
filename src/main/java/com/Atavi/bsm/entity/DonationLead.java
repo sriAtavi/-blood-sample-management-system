@@ -1,9 +1,6 @@
 package com.Atavi.bsm.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -24,4 +22,13 @@ public class DonationLead
     private int leadId;
     private LocalDate leadDate;
     private LocalTime leadTime;
+
+//    @ManyToOne
+//    private User user;
+//
+//    @OneToMany
+//    private List<DonationRequest> donationRequest;
+//
+//    @OneToOne
+//    private Donation donation;
 }

@@ -20,12 +20,12 @@ public class HospitalController {
     private final HospitalService hospitalService;
     private final RestResponseBuilder responseBuilder;
 
-    @PostMapping("/add-hospital")
-    public ResponseEntity<ResponseStructure<HospitalResponse>> addHospital(@RequestBody HospitalRequest hospitalRequest)
-    {
-        HospitalResponse  hospitalResponse = hospitalService.addHospital(hospitalRequest);
-        return responseBuilder.success(HttpStatus.CREATED, "Hospital Created", hospitalResponse);
-    }
+//        @PostMapping("/add-hospital")
+//    public ResponseEntity<ResponseStructure<HospitalResponse>> addHospital(@RequestBody HospitalRequest hospitalRequest)
+//    {
+//        HospitalResponse  hospitalResponse = hospitalService.addHospital(hospitalRequest);
+//        return responseBuilder.success(HttpStatus.CREATED, "Hospital Created", hospitalResponse);
+//    }
 
     @GetMapping("/hospitalss/{hospitalId}")
     public ResponseEntity<ResponseStructure<HospitalResponse>> findByHospitalId(@PathVariable int hospitalId)
@@ -49,7 +49,7 @@ public class HospitalController {
 //    }
 
 
-    @PostMapping("/addHospitalAdmin/{adminId}")
+    @PostMapping("/hospital/{adminId}")
     public ResponseEntity<ResponseStructure<HospitalResponse>> addHospitalAdmin(@RequestBody HospitalRequest hospitalRequest,@PathVariable int adminId)
     {
         HospitalResponse  hospitalResponse = hospitalService.addHospitalAdmin(hospitalRequest,adminId);
